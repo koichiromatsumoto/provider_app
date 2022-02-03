@@ -46,6 +46,7 @@ class _SimulatePageState extends State<SimulatePage> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: 80),
         child: Column(
           children: [
             Consumer(
@@ -164,6 +165,7 @@ class _SimulatePageState extends State<SimulatePage> {
                           child: Column(
                             children: <Widget>[
                               Container(
+                                padding: EdgeInsets.only(bottom: 15),
                                 child: MultiSelectDialogField<Skill>(
                                   key: _multiSelectKey,
                                   title: Text("スキル選択"),
@@ -177,23 +179,44 @@ class _SimulatePageState extends State<SimulatePage> {
                                     _multiSelectKey.currentState.validate();
                                     context.read(skillSelectProvider).handleChange(values);
                                   },
-                                  chipDisplay: MultiSelectChipDisplay(
-                                    onTap: (item) {
-                                      setState(() {
-                                        _selectedSkills.remove(item);
-                                      });
-                                      _multiSelectKey.currentState.validate();
-                                    },
-                                  ),
+                                  chipDisplay: MultiSelectChipDisplay.none(),
                                 ),
                               ),
-                              // ListView.builder(
-                              //   itemBuilder: (BuildContext context, int index) {
-                              //     return Text(watch(skillSelectProvider).selectedSkills[index]);
-                              //   },
-                              //   itemCount: watch(skillSelectProvider).selectedSkills.length,
-                              //   shrinkWrap: true,
-                              // ),
+                              Container(
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return Container(
+                                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Container(
+                                              alignment: Alignment.topLeft,
+                                              child: Icon(Icons.clear),
+                                              padding: EdgeInsets.only(right: 10),
+                                            ),
+                                            Container(
+                                              alignment: Alignment.topLeft,
+                                              child: Text(
+                                                  watch(skillSelectProvider).selectedSkills[index].skillName,
+                                                  style: TextStyle(fontSize: 15)
+                                              ),
+                                            ),
+                                            Spacer(),
+                                            Container(
+                                              alignment: Alignment.bottomRight,
+                                              child: Text(
+                                                  "Lv.1"
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                    );
+                                  },
+                                  itemCount: watch(skillSelectProvider).selectedSkills.length,
+                                ),
+                              ),
                             ],
                           ),
                         ),
