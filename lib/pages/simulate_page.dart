@@ -14,9 +14,7 @@ import 'package:provider_app/pages/simulate_detail_setting_page.dart';
 import 'package:provider_app/providers/counter_provider.dart';
 import 'package:provider_app/providers/navigation_history_provider.dart';
 import 'package:provider_app/providers/skill_select_provider.dart';
-import 'package:provider_app/providers/weapon_first_slot_provider.dart';
-import 'package:provider_app/providers/weapon_second_slot_provider.dart';
-import 'package:provider_app/providers/weapon_third_slot_provider.dart';
+import 'package:provider_app/providers/weapon_slot_provider.dart';
 
 class SimulatePage extends StatefulWidget {
 
@@ -30,6 +28,14 @@ class _SimulatePageState extends State<SimulatePage> {
       .toList();
   List<Skill> _selectedSkills = [];
   final _multiSelectKey = GlobalKey<FormFieldState>();
+
+  List<int> skillLevelList(Skill skill) {
+    List<int> rt = [];
+    for (var i = 1; i <= skill.getMaxLevel; i++) {
+      rt.add(i);
+    }
+    return rt;
+  }
 
   @override
   void initState() {
@@ -108,7 +114,7 @@ class _SimulatePageState extends State<SimulatePage> {
                                   setState(() {
                                     WeaponSlot.firstSlotDefaultValue = newValue;
                                   });
-                                  context.read(weaponFirstSlotProvider).handleChange(newValue);
+                                  context.read(weaponSlotProvider).setFirstSlot(newValue);
                                 },
                                 items: WeaponSlot.slotList.map<DropdownMenuItem<int>>((int value) {
                                   return DropdownMenuItem<int>(
@@ -123,7 +129,7 @@ class _SimulatePageState extends State<SimulatePage> {
                                   setState(() {
                                     WeaponSlot.secondSlotDefaultValue = newValue;
                                   });
-                                  context.read(weaponSecondSlotProvider).handleChange(newValue);
+                                  context.read(weaponSlotProvider).setSecondSlot(newValue);
                                 },
                                 items: WeaponSlot.slotList.map<DropdownMenuItem<int>>((int value) {
                                   return DropdownMenuItem<int>(
@@ -138,7 +144,7 @@ class _SimulatePageState extends State<SimulatePage> {
                                   setState(() {
                                     WeaponSlot.thirdSlotDefaultValue = newValue;
                                   });
-                                  context.read(weaponThirdSlotProvider).handleChange(newValue);
+                                  context.read(weaponSlotProvider).setThirdSlot(newValue);
                                 },
                                 items: WeaponSlot.slotList.map<DropdownMenuItem<int>>((int value) {
                                   return DropdownMenuItem<int>(
@@ -177,44 +183,73 @@ class _SimulatePageState extends State<SimulatePage> {
                                       _selectedSkills = values;
                                     });
                                     _multiSelectKey.currentState.validate();
-                                    context.read(skillSelectProvider).handleChange(values);
+                                    context.read(skillSelectProvider).handleChange(_selectedSkills);
+                                    context.read(skillSelectProvider).setDefaultSkillLevels(_selectedSkills);
                                   },
                                   chipDisplay: MultiSelectChipDisplay.none(),
                                 ),
                               ),
                               Container(
                                 child: ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemBuilder: (BuildContext context, int index) {
-                                    return Container(
-                                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Container(
-                                              alignment: Alignment.topLeft,
-                                              child: Icon(Icons.clear),
-                                              padding: EdgeInsets.only(right: 10),
-                                            ),
-                                            Container(
-                                              alignment: Alignment.topLeft,
-                                              child: Text(
-                                                  watch(skillSelectProvider).selectedSkills[index].skillName,
-                                                  style: TextStyle(fontSize: 15)
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return Container(
+                                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                          child: Row(
+                                            children: <Widget>[
+                                              Container(
+                                                alignment: Alignment.topLeft,
+                                                child: IconButton(
+                                                    icon: Icon(Icons.clear),
+                                                    onPressed: () {
+                                                      context.read(skillSelectProvider).clear(index);
+                                                      setState(() {
+                                                        _selectedSkills = watch(skillSelectProvider).selectedSkills;
+                                                      });
+                                                    },
+                                                    highlightColor: Colors.blueAccent
+                                                ),
+                                                padding: EdgeInsets.only(right: 10),
                                               ),
-                                            ),
-                                            Spacer(),
-                                            Container(
-                                              alignment: Alignment.bottomRight,
-                                              child: Text(
-                                                  "Lv.1"
+                                              Container(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(
+                                                    watch(skillSelectProvider).selectedSkills.elementAt(index).skillName,
+                                                    style: TextStyle(fontSize: 15)
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        )
-                                    );
-                                  },
-                                  itemCount: watch(skillSelectProvider).selectedSkills.length,
+                                              Spacer(),
+                                              Container(
+                                                  alignment: Alignment.bottomRight,
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                          "Lv"
+                                                      ),
+                                                      DropdownButton<int>(
+                                                        value: watch(skillSelectProvider).selectedSkills.elementAt(index).selectedLevel,
+                                                        onChanged: (newValue) {
+                                                          context.read(skillSelectProvider).setSelectedSkillLevel(watch(skillSelectProvider).selectedSkills.elementAt(index), newValue);
+                                                          setState(() {
+                                                            _selectedSkills = watch(skillSelectProvider).selectedSkills;
+                                                          });
+                                                        },
+                                                        items: skillLevelList(watch(skillSelectProvider).selectedSkills.elementAt(index)).map<DropdownMenuItem<int>>((int value) {
+                                                          return DropdownMenuItem<int>(
+                                                            value: value,
+                                                            child: Text(value.toString()),
+                                                          );
+                                                        }).toList(),
+                                                      )
+                                                    ],
+                                                  )
+                                              ),
+                                            ],
+                                          )
+                                      );
+                                    },
+                                    itemCount: watch(skillSelectProvider).selectedSkills != null ? watch(skillSelectProvider).selectedSkills.length : 0
                                 ),
                               ),
                             ],

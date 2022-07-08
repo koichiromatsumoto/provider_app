@@ -1,22 +1,24 @@
 class Skill {
   Skill(
-    {
-      this.id,
-      this.skillName,
-      this.maxLevel,
-      this.createdAt,
-      this.updatedAt,
-      this.deletedAt,
-    }
-  );
+      {
+        this.id,
+        this.skillName,
+        this.maxLevel,
+        this.createdAt,
+        this.updatedAt,
+        this.deletedAt,
+        this.selectedLevel
+      }
+      );
 
   factory Skill.fromMap(Map<String, dynamic> json) => Skill(
     id: json['id'] as int,
-    skillName: json['title'] as String,
-    maxLevel: json['body'] as int,
+    skillName: json['skillName'] as String,
+    maxLevel: json['maxLevel'] as int,
     createdAt: DateTime.parse(json['createdAt'] as String).toLocal(),
     updatedAt: DateTime.parse(json['updatedAt'] as String).toLocal(),
     deletedAt: DateTime.parse(json['deletedAt'] as String).toLocal(),
+    selectedLevel: json['selectedLevel'] as int,
   );
 
   final int id;
@@ -25,11 +27,13 @@ class Skill {
   final DateTime createdAt;
   DateTime updatedAt;
   DateTime deletedAt;
+  int selectedLevel;
 
   // define getter
   int get getId => id;
   String get getSkillName => '$skillName';
   int get getMaxLevel => maxLevel;
+  int get getSelectedLevel => selectedLevel;
   DateTime get getUpdatedAt => updatedAt;
 
   Map<String, dynamic> toMap() {
@@ -40,6 +44,7 @@ class Skill {
       'createdAt': createdAt.toUtc().toIso8601String(),
       'updatedAt': updatedAt.toUtc().toIso8601String(),
       'deletedAt': deletedAt.toUtc().toIso8601String(),
+      'selectedLevel': selectedLevel,
     };
   }
 
@@ -69,6 +74,5 @@ class Skill {
     Skill(id: 18, skillName: "弾丸節約", maxLevel: 3),
     Skill(id: 19, skillName: "弾導強化", maxLevel: 3),
     Skill(id: 20, skillName: "渾身", maxLevel: 3),
-
   ];
 }
