@@ -24,7 +24,7 @@ class GosekiPage extends StatelessWidget {
                       child: const Text('別のページを開く'),
                       onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute<PageRoute<Widget>>(
-                              builder: (_) => OtherPage()))),
+                              builder: (_) => SimulateDetailSettingPage()))),
                   ElevatedButton(
                       child: const Text('もどる'),
                       onPressed: context.read(navigationHistoryProvider).hasHistory ? context.read(navigationHistoryProvider).pop : null),
