@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:provider_app/configs/tab_index.dart';
-import 'package:provider_app/providers/counter_provider.dart';
-import 'package:provider_app/providers/navigation_history_provider.dart';
+import 'package:provider_app/constant/configs.dart';
+import 'package:provider_app/provider/counter_provider.dart';
+import 'package:provider_app/provider/navigation_history_provider.dart';
 
 class FavoritePage extends StatelessWidget {
   const FavoritePage({Key key}) : super(key: key);

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:provider_app/pages/main_page.dart';
+import 'package:provider_app/constant/strings.dart';
+import 'package:provider_app/view/main_page.dart';
+
+import 'constant/colors.dart';
 
 void main() {
   runApp(
@@ -16,10 +19,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     const locale = Locale("ja", "JP");
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: AppString.TITLE,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        accentColor: Colors.blueAccent,
+        primarySwatch: AppColor.THEME_COLOR,
+        accentColor: AppColor.SECOND_THEME_COLOR,
       ),
       darkTheme: ThemeData.dark(),
       home: MainPage(),

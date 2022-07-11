@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:provider_app/configs/weapon_slot.dart';
+import 'package:provider_app/constant/configs.dart';
 
 final weaponSlotProvider = ChangeNotifierProvider(
       (ref) => WeaponSlotSelector(),

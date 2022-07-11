@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider_app/domain/skill_repository.dart';
-import 'package:provider_app/domain/skills.dart';
-import 'package:provider_app/providers/common/database_provider.dart';
+import 'package:provider_app/model/repository/skill_repository.dart';
+import 'package:provider_app/model/entity/skills.dart';
+import 'package:provider_app/provider/common/database_provider.dart';
 
 class SkillRepositoryImpl implements SkillRepository {
   static String table = 'skills';

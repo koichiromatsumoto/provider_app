@@ -1,4 +1,4 @@
-import 'package:provider_app/domain/skills.dart';
+import 'package:provider_app/model/entity/skills.dart';
 
 abstract class SkillRepository {
   Future<Skill> create({
