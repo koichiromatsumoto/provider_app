@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../constant/colors.dart';
 
+// 検索詳細設定ボタン
 class DeviseMaxWidthBtn extends StatelessWidget {
   final String text;
   final dynamic nextPage;

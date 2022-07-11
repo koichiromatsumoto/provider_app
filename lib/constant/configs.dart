@@ -5,6 +5,9 @@ class TabIndex {
 }
 
 class WeaponSlot{
+  static int first = 1;
+  static int second = 2;
+  static int third = 3;
   static int firstSlotDefaultValue = 0;
   static int secondSlotDefaultValue = 0;
   static int thirdSlotDefaultValue = 0;

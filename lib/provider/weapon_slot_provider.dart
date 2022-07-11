@@ -7,13 +7,17 @@ final weaponSlotProvider = ChangeNotifierProvider(
 );
 
 class WeaponSlotSelector extends ChangeNotifier {
+  int firstSlotValue = WeaponSlot.firstSlotDefaultValue;
+  int secondSlotValue = WeaponSlot.secondSlotDefaultValue;
+  int thirdSlotValue = WeaponSlot.thirdSlotDefaultValue;
+
   void setFirstSlot(int newValue) {
-    WeaponSlot.firstSlotDefaultValue = newValue;
+    firstSlotValue = newValue;
   }
   void setSecondSlot(int newValue) {
-    WeaponSlot.secondSlotDefaultValue = newValue;
+    secondSlotValue = newValue;
   }
   void setThirdSlot(int newValue) {
-    WeaponSlot.thirdSlotDefaultValue = newValue;
+    thirdSlotValue = newValue;
   }
 }
