@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:provider_app/constant/configs.dart';
-import 'package:provider_app/provider/counter_provider.dart';
 import 'package:provider_app/provider/navigation_history_provider.dart';
 
 class FavoritePage extends StatelessWidget {
@@ -30,9 +29,6 @@ class FavoritePage extends StatelessWidget {
                   ElevatedButton(
                       child: const Text('もどる'),
                       onPressed: context.read(navigationHistoryProvider).hasHistory ? context.read(navigationHistoryProvider).pop : null),
-                  Text(
-                      '${watch(counterProvider).count} 回押しました！'
-                  ),
                 ]
             );
           }

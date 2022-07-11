@@ -1,18 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
-import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
-import 'package:multi_select_flutter/util/multi_select_item.dart';
-import 'package:provider_app/component/weapon_slot_dropdown.dart';
 
 import '../constant/colors.dart';
-import '../constant/configs.dart';
 import '../constant/strings.dart';
 import '../model/entity/skills.dart';
 import '../provider/skill_select_provider.dart';
-import '../provider/weapon_slot_provider.dart';
 
+// 選択スキルリストビュー
 class SelectedSkillsListView extends StatefulWidget {
   BuildContext consumerContext;
   SelectedSkillsListView(this.consumerContext);

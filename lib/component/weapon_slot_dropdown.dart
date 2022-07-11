@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/all.dart';
 
-import '../constant/colors.dart';
 import '../constant/configs.dart';
 import '../provider/weapon_slot_provider.dart';
 

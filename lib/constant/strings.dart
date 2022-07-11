@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class AppString {
   static const String TITLE = "Skill Sim";
   static const String SIMULATE_PAGE = "装備検索";
