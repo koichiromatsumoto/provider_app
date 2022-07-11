@@ -75,6 +75,7 @@ class _SimulatePageState extends State<SimulatePage> {
                             ),
                           ),
                         ),
+                        // 検索するボタン
                         ElevatedButton(
                             child: const Text(AppString.SIMULATE_BTN),
                             onPressed: context.read(skillSelectProvider).selectedSkills.isEmpty ? null : () => Navigator.of(context).push(
