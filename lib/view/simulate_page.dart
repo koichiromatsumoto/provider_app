@@ -2,16 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
+import 'package:provider_app/component/confirm_dialog.dart';
 import 'package:provider_app/component/devise_max_width_btn.dart';
 import 'package:provider_app/component/selected_skills_list_view.dart';
+import 'package:provider_app/constant/configs.dart';
 import 'package:provider_app/constant/strings.dart';
+import 'package:provider_app/model/db/db_manager.dart';
 import 'package:provider_app/model/entity/skills.dart';
+import 'package:provider_app/model/repository/skill_repository.dart';
 import 'package:provider_app/view/simulate_detail_setting_page.dart';
 import 'package:provider_app/view/simulate_result_page.dart';
 import 'package:provider_app/provider/skill_select_provider.dart';
 
 import '../component/select_skill_form.dart';
 import '../component/weapon_slot_select_area.dart';
+import '../provider/navigation_history_provider.dart';
 
 class SimulatePage extends StatefulWidget {
 
@@ -20,16 +25,25 @@ class SimulatePage extends StatefulWidget {
 }
 
 class _SimulatePageState extends State<SimulatePage> {
-  final items = Skill.skills
-      .map((skill) => MultiSelectItem<Skill>(skill, skill.skillName))
-      .toList();
+  List<Skill> skills;
+  var items = [];
   List<Skill> _selectedSkills = [];
   final _multiSelectKey = GlobalKey<FormFieldState>();
+  bool isLoading = false;
 
   @override
   void initState() {
     _selectedSkills = [];
     super.initState();
+    skillData();
+  }
+
+  Future skillData() async {
+    setState(() => isLoading = true);
+    skills = await SkillRepository.getAll();
+    items = skills.map((skill) => MultiSelectItem<Skill>(skill, skill.skillName))
+        .toList();
+    setState(() => isLoading = false);
   }
 
   @override
@@ -40,7 +54,10 @@ class _SimulatePageState extends State<SimulatePage> {
         title: Text(AppString.SIMULATE_PAGE),
         centerTitle: true,
       ),
-      body: Container(
+      body: isLoading //「読み込み中」だったらローディングアニメーションを表示
+          ? const Center(
+        child: CircularProgressIndicator(),
+      ) : Container(
         padding: EdgeInsets.only(bottom: 80),
         child: Column(
           children: [
@@ -50,7 +67,9 @@ class _SimulatePageState extends State<SimulatePage> {
                   return Column(
                     children: <Widget>[
                       // 検索詳細設定ボタン
-                      DeviseMaxWidthBtn(AppString.SIMULATE_DETAIL_SETTING, SimulateDetailSettingPage()),
+                      DeviseMaxWidthBtn(AppString.SIMULATE_DETAIL_SETTING, null, SimulateDetailSettingPage()),
+                      // 護石登録
+                      DeviseMaxWidthBtn(AppString.GOSEKI_PAGE, TabIndex.GosekiIndex, null),
                       // 武器スロット選択エリア
                       WeaponSlotSelectArea(context),
                       Expanded(
@@ -64,6 +83,30 @@ class _SimulatePageState extends State<SimulatePage> {
                                 SelectSkillForm(context, items, _multiSelectKey),
                                 // 選択スキルリストビュー
                                 SelectedSkillsListView(context),
+                                // スキル全削除ボタン
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  child: IconButton(
+                                    icon: Icon(Icons.delete, color:Colors.red),
+                                    onPressed: () {
+                                      showDialog<void>(
+                                        context: context,
+                                        builder: (_) {
+                                          return ConfirmDialog(
+                                            "選択したスキルをすべて削除します",
+                                            "よろしいですか？",
+                                            onOkTap: () => context.read(skillSelectProvider).allClear(),
+                                          );
+                                      });
+                                      setState(() {
+                                        if (context.read(skillSelectProvider).selectedSkills == []) {
+                                          context.read(skillSelectProvider).selectedSkills = [];
+                                        }
+                                      });
+                                    },
+                                    highlightColor: Colors.deepOrange,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -77,6 +120,16 @@ class _SimulatePageState extends State<SimulatePage> {
                             builder: (_) => SimulateResultPage()
                           )
                         )
+                      ),
+                      ElevatedButton(
+                        child: const Text('Button'),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.orange,
+                          onPrimary: Colors.white,
+                        ),
+                        onPressed: () {
+                          DBManager.instance.destroyDatabase();
+                        },
                       ),
                     ],
                   );

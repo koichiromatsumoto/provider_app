@@ -27,4 +27,7 @@ class SkillSelector extends ChangeNotifier {
     selectedSkills[index].selectedLevel = defaultSkillLevel;
     selectedSkills.removeAt(index);
   }
+  VoidCallback allClear() {
+    selectedSkills.clear();
+  }
 }

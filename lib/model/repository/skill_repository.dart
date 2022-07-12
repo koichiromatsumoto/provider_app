@@ -1,14 +1,38 @@
-import 'package:provider_app/model/entity/skills.dart';
+import 'dart:async';
 
-abstract class SkillRepository {
-  Future<Skill> create({
-    int id,
-    String skillName,
-    int maxLevel,
-    DateTime now,
-  });
-  Future<List<Skill>> findAll();
-  Future<Skill> find({int id});
-  Future<void> update({Skill skill});
-  Future<void> delete({int id});
+import '../db/db_manager.dart';
+import '../entity/skills.dart';
+
+class SkillRepository {
+  static String table = 'skills';
+  static DBManager instance = DBManager.instance;
+
+  static create(Skill skill) async {
+    final db = await instance.database;
+    await db.insert(table, skill.toCreateMap());
+  }
+
+  static getAll() async {
+    final db = await instance.database;
+    var res = await db.rawQuery('SELECT * FROM $table ORDER BY id ASC');
+    List<Skill> list =
+    res.isNotEmpty ? res.map((c) => Skill.fromMap(c)).toList() : [];
+    return list;
+  }
+
+  static update(Skill skill) async {
+    final db = await instance.database;
+    var res = await db.update(
+        table,
+        skill.toUpdateMap(),
+        where: "id = ?",
+        whereArgs: [skill.id]
+    );
+    return res;
+  }
+
+  static void delete(int id) async {
+    final db = await instance.database;
+    await db.delete(table, where: 'id = ?', whereArgs: [id]);
+  }
 }

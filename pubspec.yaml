@@ -32,14 +32,15 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # 状態保持
-  hooks_riverpod:
+  hooks_riverpod: 0.14.0+4
   # 検索セレクトボックス
   multi_select_flutter: ^4.0.0
   # ローカルDB
-  provider:
-  sqflite:
-  shared_preferences:
-  dropdown_search:
+  provider: 5.0.0
+  sqflite: ^2.0.2
+  path_provider: ^2.0.8
+  shared_preferences: 2.0.6
+  dropdown_search: 0.6.3
 
 dev_dependencies:
   flutter_test:

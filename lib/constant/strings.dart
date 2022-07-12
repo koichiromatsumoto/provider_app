@@ -9,4 +9,7 @@ class AppString {
   static const String SELECT_SKILLS_EXPLAIN = "--スキルを選択してください--";
   static const String LEVEL = "Lv ";
   static const String SIMULATE_BTN = "検索する";
+
+  static const String OK = "OK";
+  static const String CANCEL = "キャンセル";
 }
