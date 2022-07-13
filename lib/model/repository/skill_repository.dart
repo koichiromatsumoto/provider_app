@@ -20,6 +20,14 @@ class SkillRepository {
     return list;
   }
 
+  static getById(int id) async {
+    final db = await instance.database;
+    var res = await db.rawQuery('SELECT * FROM $table WHERE id = $id ORDER BY id ASC');
+    Skill skill =
+    res.isNotEmpty ? res.map((c) => Skill.fromMap(c)).toList()[0] : [];
+    return skill;
+  }
+
   static update(Skill skill) async {
     final db = await instance.database;
     var res = await db.update(

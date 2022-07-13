@@ -50,8 +50,6 @@ class _SimulatePageState extends State<SimulatePage> {
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
-    items = skills.map((skill) => MultiSelectItem<Skill>(skill, skill.skillName))
-        .toList();
     return Scaffold(
       appBar: AppBar(
         title: Text(AppString.SIMULATE_PAGE),
@@ -67,6 +65,8 @@ class _SimulatePageState extends State<SimulatePage> {
             Expanded(
               child: Consumer(
                 builder: (context, watch, child){
+                  items = skills.map((skill) => MultiSelectItem<Skill>(skill, skill.skillName))
+                      .toList();
                   return Column(
                     children: <Widget>[
                       // 検索詳細設定ボタン

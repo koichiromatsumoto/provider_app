@@ -5,6 +5,8 @@ import 'package:provider_app/model/entity/skills.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 
+import '../entity/gosekis.dart';
+
 class DBManager {
   // シングルトンクラス
   DBManager._privateConstructor();
@@ -51,6 +53,12 @@ class DBManager {
     await db.execute('''
           CREATE TABLE IF NOT EXISTS gosekis (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            firstSkillId INTEGER NOT NULL,
+            firstSkillName TEXT NOT NULL,
+            firstSkillLevel INTEGER NOT NULL,
+            secondSkillId INTEGER,
+            secondSkillName TEXT,
+            secondSkillLevel INTEGER,
             firstSlot INTEGER NOT NULL,
             secondSlot INTEGER NOT NULL,
             thirdSlot INTEGER NOT NULL,
@@ -59,18 +67,37 @@ class DBManager {
           )
           ''');
     Skill.skills.forEach((skill) async {
-      await db.insert("skills", toMap(skill));
+      await db.insert("skills", toMapSkill(skill));
+    });
+    Goseki.gosekis.forEach((goseki) async {
+      await db.insert("gosekis", toMapGoseki(goseki));
     });
   }
 
-  Map<String, dynamic> toMap(Skill skill) {
+  Map<String, dynamic> toMapSkill(Skill skill) {
     return <String, dynamic>{
       'id': skill.id,
       'skillName': skill.skillName,
       'maxLevel': skill.maxLevel,
-      'createdAt': skill.createdAt.toUtc().toIso8601String(),
-      'updatedAt': skill.updatedAt.toUtc().toIso8601String(),
+      'createdAt': DateTime.now().toUtc().toIso8601String(),
+      'updatedAt': DateTime.now().toUtc().toIso8601String(),
       'selectedLevel': skill.selectedLevel,
+    };
+  }
+  Map<String, dynamic> toMapGoseki(Goseki goseki) {
+    return <String, dynamic>{
+      'id': goseki.id,
+      'firstSkillId': goseki.firstSkillId,
+      'firstSkillName': goseki.firstSkillName,
+      'firstSkillLevel': goseki.firstSkillLevel,
+      'secondSkillId': goseki.secondSkillId,
+      'secondSkillName': goseki.secondSkillName,
+      'secondSkillLevel': goseki.secondSkillLevel,
+      'firstSlot': goseki.firstSlot,
+      'secondSlot': goseki.secondSlot,
+      'thirdSlot': goseki.thirdSlot,
+      'createdAt': DateTime.now().toUtc().toIso8601String(),
+      'updatedAt': DateTime.now().toUtc().toIso8601String()
     };
   }
 
