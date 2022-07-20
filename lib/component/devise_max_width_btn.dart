@@ -30,21 +30,21 @@ class DeviseMaxWidthBtn extends StatelessWidget {
                 ),
               ),
               Icon(
-                Icons.arrow_forward_ios
+                  Icons.arrow_forward_ios
               ),
             ],
           ),
         ),
         onPressed: tabIndex == null ?
-          () => Navigator.of(context).push(
+            () => Navigator.of(context).push(
             MaterialPageRoute<PageRoute<Widget>>(
-              builder: (_) => nextPage)) :
-          () => context.read(navigationHistoryProvider).moveTo(tabIndex),
+                builder: (_) => nextPage)) :
+            () => context.read(navigationHistoryProvider).moveTo(tabIndex),
       ),
       decoration: BoxDecoration(
         border: const Border(
           bottom: const BorderSide(
-            color: AppColor.MAX_WIDTH_BTN_BORDER_COLOR,
+            color: MAX_WIDTH_BTN_BORDER_COLOR,
           ),
         ),
       ),

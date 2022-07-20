@@ -31,64 +31,64 @@ class _SelectedSkillsListViewState extends State<SelectedSkillsListView> {
         context: context,
         removeBottom: true,
         child: Container(
-          color: AppColor.LISTVIEW_BACKGROUND_COLOR,
+          color: LISTVIEW_BACKGROUND_COLOR,
           child: Scrollbar(
             child: ListView.builder(
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: IconButton(
-                            icon: Icon(Icons.clear),
-                            onPressed: () {
-                              setState(() {
-                                widget.consumerContext.read(skillSelectProvider).clear(index);
-                              });
-                            },
-                            highlightColor: AppColor.SECOND_THEME_COLOR,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            alignment: Alignment.topLeft,
+                            child: IconButton(
+                              icon: Icon(Icons.clear),
+                              onPressed: () {
+                                setState(() {
+                                  widget.consumerContext.read(skillSelectProvider).clear(index);
+                                });
+                              },
+                              highlightColor: SECOND_THEME_COLOR,
+                            ),
+                            padding: EdgeInsets.only(right: 10),
                           ),
-                          padding: EdgeInsets.only(right: 10),
-                        ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                              widget.consumerContext.read(skillSelectProvider).selectedSkills.elementAt(index).skillName,
-                              style: TextStyle(fontSize: 15)
+                          Container(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                                widget.consumerContext.read(skillSelectProvider).selectedSkills.elementAt(index).skillName,
+                                style: TextStyle(fontSize: 15)
+                            ),
                           ),
-                        ),
-                        Spacer(),
-                        Container(
-                            alignment: Alignment.bottomRight,
-                            child: Row(
-                              children: [
-                                Text(
-                                    AppString.LEVEL
-                                ),
-                                DropdownButton<int>(
-                                  value: widget.consumerContext.read(skillSelectProvider).selectedSkills.elementAt(index).selectedLevel,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      widget.consumerContext.read(skillSelectProvider).setSelectedSkillLevel(widget.consumerContext.read(skillSelectProvider).selectedSkills.elementAt(index), newValue);
-                                    });
-                                  },
-                                  items: skillLevelList(widget.consumerContext.read(skillSelectProvider).selectedSkills.elementAt(index)).map<DropdownMenuItem<int>>((int value) {
-                                    return DropdownMenuItem<int>(
-                                      value: value,
-                                      child: Text(value.toString()),
-                                    );
-                                  }).toList(),
-                                )
-                              ],
-                            )
-                        ),
-                      ],
-                    )
-                );
-              },
-              itemCount: widget.consumerContext.read(skillSelectProvider).selectedSkills != null ? widget.consumerContext.read(skillSelectProvider).selectedSkills.length : 0
+                          Spacer(),
+                          Container(
+                              alignment: Alignment.bottomRight,
+                              child: Row(
+                                children: [
+                                  Text(
+                                      LEVEL
+                                  ),
+                                  DropdownButton<int>(
+                                    value: widget.consumerContext.read(skillSelectProvider).selectedSkills.elementAt(index).selectedLevel,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        widget.consumerContext.read(skillSelectProvider).setSelectedSkillLevel(widget.consumerContext.read(skillSelectProvider).selectedSkills.elementAt(index), newValue);
+                                      });
+                                    },
+                                    items: skillLevelList(widget.consumerContext.read(skillSelectProvider).selectedSkills.elementAt(index)).map<DropdownMenuItem<int>>((int value) {
+                                      return DropdownMenuItem<int>(
+                                        value: value,
+                                        child: Text(value.toString()),
+                                      );
+                                    }).toList(),
+                                  )
+                                ],
+                              )
+                          ),
+                        ],
+                      )
+                  );
+                },
+                itemCount: widget.consumerContext.read(skillSelectProvider).selectedSkills != null ? widget.consumerContext.read(skillSelectProvider).selectedSkills.length : 0
             ),
           ),
         ),

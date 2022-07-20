@@ -20,9 +20,9 @@ Future<void> inputGosekiDialog(BuildContext context, List<Skill> skills) async {
         Skill secondSkill;
         int defaultSlot = 0;
         Goseki goseki = Goseki(
-          firstSlot: defaultSlot,
-          secondSlot: defaultSlot,
-          thirdSlot: defaultSlot
+            firstSlot: defaultSlot,
+            secondSlot: defaultSlot,
+            thirdSlot: defaultSlot
         );
         int defaultSkillLevel = 1;
 
@@ -37,162 +37,162 @@ Future<void> inputGosekiDialog(BuildContext context, List<Skill> skills) async {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
             content: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: 200.0,
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                constraints: BoxConstraints(
+                  maxHeight: 200.0,
+                ),
+                child: Column(
                     children: [
-                      DropdownButton<Skill>(
-                        value: firstSkill,
-                        hint: Text('-- 1つ目のスキル --'),
-                        onChanged: (newValue) {
-                          setState(() {
-                            firstSkill = newValue;
-                            firstSkill.selectedLevel = defaultSkillLevel;
-                            goseki.firstSkillId = firstSkill.id;
-                            goseki.firstSkillName = firstSkill.skillName;
-                            goseki.firstSkillLevel = defaultSkillLevel;
-                          });
-                        },
-                        items: skills.map<DropdownMenuItem<Skill>>((Skill value) {
-                          return DropdownMenuItem<Skill>(
-                            value: value,
-                            child: Text(value.skillName),
-                          );
-                        }).toList(),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            DropdownButton<Skill>(
+                              value: firstSkill,
+                              hint: Text('-- 1つ目のスキル --'),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  firstSkill = newValue;
+                                  firstSkill.selectedLevel = defaultSkillLevel;
+                                  goseki.firstSkillId = firstSkill.id;
+                                  goseki.firstSkillName = firstSkill.skillName;
+                                  goseki.firstSkillLevel = defaultSkillLevel;
+                                });
+                              },
+                              items: skills.map<DropdownMenuItem<Skill>>((Skill value) {
+                                return DropdownMenuItem<Skill>(
+                                  value: value,
+                                  child: Text(value.skillName),
+                                );
+                              }).toList(),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                    LEVEL
+                                ),
+                                DropdownButton<int>(
+                                  value: firstSkill == null ? null : goseki.firstSkillLevel,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      goseki.firstSkillLevel = newValue;
+                                    });
+                                  },
+                                  items: firstSkill == null ? null :
+                                  skillLevelList(firstSkill).map<DropdownMenuItem<int>>((int value) {
+                                    return DropdownMenuItem<int>(
+                                      value: value,
+                                      child: Text(value.toString()),
+                                    );
+                                  }
+                                  ).toList(),
+                                )
+                              ],
+                            )
+                          ]
                       ),
                       Row(
-                        children: [
-                          Text(
-                              AppString.LEVEL
-                          ),
-                          DropdownButton<int>(
-                            value: firstSkill == null ? null : goseki.firstSkillLevel,
-                            onChanged: (newValue) {
-                              setState(() {
-                                goseki.firstSkillLevel = newValue;
-                              });
-                            },
-                            items: firstSkill == null ? null :
-                            skillLevelList(firstSkill).map<DropdownMenuItem<int>>((int value) {
-                              return DropdownMenuItem<int>(
-                                value: value,
-                                child: Text(value.toString()),
-                              );
-                            }
-                            ).toList(),
-                          )
-                        ],
-                      )
-                    ]
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      DropdownButton<Skill>(
-                        value: secondSkill,
-                        hint: Text('-- 2つ目のスキル --'),
-                        onChanged: (newValue) {
-                          setState(() {
-                            secondSkill = newValue;
-                            goseki.secondSkillId = secondSkill.id;
-                            goseki.secondSkillName = secondSkill.skillName;
-                            goseki.secondSkillLevel = defaultSkillLevel;
-                          });
-                        },
-                        items: skills.map<DropdownMenuItem<Skill>>((Skill value) {
-                          return DropdownMenuItem<Skill>(
-                            value: value,
-                            child: Text(value.skillName),
-                          );
-                        }).toList(),
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            DropdownButton<Skill>(
+                              value: secondSkill,
+                              hint: Text('-- 2つ目のスキル --'),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  secondSkill = newValue;
+                                  goseki.secondSkillId = secondSkill.id;
+                                  goseki.secondSkillName = secondSkill.skillName;
+                                  goseki.secondSkillLevel = defaultSkillLevel;
+                                });
+                              },
+                              items: skills.map<DropdownMenuItem<Skill>>((Skill value) {
+                                return DropdownMenuItem<Skill>(
+                                  value: value,
+                                  child: Text(value.skillName),
+                                );
+                              }).toList(),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                    LEVEL
+                                ),
+                                DropdownButton<int>(
+                                  value: secondSkill == null ? null : goseki.secondSkillLevel,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      goseki.secondSkillLevel = newValue;
+                                    });
+                                  },
+                                  items: secondSkill == null ? null :
+                                  skillLevelList(secondSkill).map<DropdownMenuItem<int>>((int value) {
+                                    return DropdownMenuItem<int>(
+                                      value: value,
+                                      child: Text(value.toString()),
+                                    );
+                                  }
+                                  ).toList(),
+                                )
+                              ],
+                            )
+                          ]
                       ),
-                      Row(
-                        children: [
-                          Text(
-                              AppString.LEVEL
-                          ),
-                          DropdownButton<int>(
-                            value: secondSkill == null ? null : goseki.secondSkillLevel,
-                            onChanged: (newValue) {
-                              setState(() {
-                                goseki.secondSkillLevel = newValue;
-                              });
-                            },
-                            items: secondSkill == null ? null :
-                            skillLevelList(secondSkill).map<DropdownMenuItem<int>>((int value) {
-                              return DropdownMenuItem<int>(
-                                value: value,
-                                child: Text(value.toString()),
-                              );
-                            }
-                            ).toList(),
-                          )
-                        ],
+                      Container(
+                        padding: EdgeInsets.only(top: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "スロット",
+                              ),
+                            ),
+                            DropdownButton<int>(
+                              value: goseki.firstSlot,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  goseki.firstSlot = newValue;
+                                });
+                              },
+                              items: WeaponSlot.slotList.map<DropdownMenuItem<int>>((int value) {
+                                return DropdownMenuItem<int>(
+                                  value: value,
+                                  child: Text(value.toString()),
+                                );
+                              }).toList(),
+                            ),
+                            DropdownButton<int>(
+                              value: goseki.secondSlot,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  goseki.secondSlot = newValue;
+                                });
+                              },
+                              items: WeaponSlot.slotList.map<DropdownMenuItem<int>>((int value) {
+                                return DropdownMenuItem<int>(
+                                  value: value,
+                                  child: Text(value.toString()),
+                                );
+                              }).toList(),
+                            ),
+                            DropdownButton<int>(
+                              value: goseki.thirdSlot,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  goseki.thirdSlot = newValue;
+                                });
+                              },
+                              items: WeaponSlot.slotList.map<DropdownMenuItem<int>>((int value) {
+                                return DropdownMenuItem<int>(
+                                  value: value,
+                                  child: Text(value.toString()),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
                       )
                     ]
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "スロット",
-                          ),
-                        ),
-                        DropdownButton<int>(
-                          value: goseki.firstSlot,
-                          onChanged: (newValue) {
-                            setState(() {
-                              goseki.firstSlot = newValue;
-                            });
-                          },
-                          items: WeaponSlot.slotList.map<DropdownMenuItem<int>>((int value) {
-                            return DropdownMenuItem<int>(
-                              value: value,
-                              child: Text(value.toString()),
-                            );
-                          }).toList(),
-                        ),
-                        DropdownButton<int>(
-                          value: goseki.secondSlot,
-                          onChanged: (newValue) {
-                            setState(() {
-                              goseki.secondSlot = newValue;
-                            });
-                          },
-                          items: WeaponSlot.slotList.map<DropdownMenuItem<int>>((int value) {
-                            return DropdownMenuItem<int>(
-                              value: value,
-                              child: Text(value.toString()),
-                            );
-                          }).toList(),
-                        ),
-                        DropdownButton<int>(
-                          value: goseki.thirdSlot,
-                          onChanged: (newValue) {
-                            setState(() {
-                              goseki.thirdSlot = newValue;
-                            });
-                          },
-                          items: WeaponSlot.slotList.map<DropdownMenuItem<int>>((int value) {
-                            return DropdownMenuItem<int>(
-                              value: value,
-                              child: Text(value.toString()),
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    ),
-                  )
-                ]
-              )
+                )
             ),
             actions: <Widget>[
               TextButton(

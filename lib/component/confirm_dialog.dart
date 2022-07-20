@@ -24,7 +24,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
       content: widget.content != null ? Text(widget.content) : null,
       actions: <Widget>[
         TextButton(
-          child: Text(AppString.CANCEL, style: TextStyle(color: Colors.blue)),
+          child: Text(CANCEL, style: TextStyle(color: Colors.blue)),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -33,7 +33,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
           ),
         ),
         TextButton(
-          child: Text(AppString.OK, style: TextStyle(color: Colors.blue)),
+          child: Text(OK, style: TextStyle(color: Colors.blue)),
           onPressed: () {
             setState(() {
               widget.onOkTap();

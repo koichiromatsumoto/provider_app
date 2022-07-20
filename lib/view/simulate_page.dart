@@ -52,7 +52,7 @@ class _SimulatePageState extends State<SimulatePage> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppString.SIMULATE_PAGE),
+        title: Text(SIMULATE_PAGE),
         centerTitle: true,
       ),
       body: isLoading //「読み込み中」だったらローディングアニメーションを表示
@@ -64,87 +64,87 @@ class _SimulatePageState extends State<SimulatePage> {
           children: [
             Expanded(
               child: Consumer(
-                builder: (context, watch, child){
-                  items = skills.map((skill) => MultiSelectItem<Skill>(skill, skill.skillName))
-                      .toList();
-                  return Column(
-                    children: <Widget>[
-                      // 検索詳細設定ボタン
-                      DeviseMaxWidthBtn(AppString.SIMULATE_DETAIL_SETTING, null, SimulateDetailSettingPage()),
-                      // // 護石登録
-                      // DeviseMaxWidthBtn(AppString.GOSEKI_PAGE, TabIndex.GosekiIndex, null),
-                      // 武器スロット選択エリア
-                      WeaponSlotSelectArea(context),
-                      Expanded(
-                        child: Container(
-                          width: deviceWidth,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(30, 10, 30, 15),
-                            child: Column(
-                              children: <Widget>[
-                                // スキル選択フォーム
-                                SelectSkillForm(context, items, _multiSelectKey),
-                                // 選択スキルリストビュー
-                                SelectedSkillsListView(context),
-                                // スキル全削除ボタン
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  child: IconButton(
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: context.read(skillSelectProvider).selectedSkills.isEmpty ? null : Colors.red,
+                  builder: (context, watch, child){
+                    items = skills.map((skill) => MultiSelectItem<Skill>(skill, skill.skillName))
+                        .toList();
+                    return Column(
+                      children: <Widget>[
+                        // 検索詳細設定ボタン
+                        DeviseMaxWidthBtn(SIMULATE_DETAIL_SETTING, null, SimulateDetailSettingPage()),
+                        // // 護石登録
+                        // DeviseMaxWidthBtn(GOSEKI_PAGE, TabIndex.GosekiIndex, null),
+                        // 武器スロット選択エリア
+                        WeaponSlotSelectArea(context),
+                        Expanded(
+                          child: Container(
+                            width: deviceWidth,
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(30, 10, 30, 15),
+                              child: Column(
+                                children: <Widget>[
+                                  // スキル選択フォーム
+                                  SelectSkillForm(context, items, _multiSelectKey),
+                                  // 選択スキルリストビュー
+                                  SelectedSkillsListView(context),
+                                  // スキル全削除ボタン
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    child: IconButton(
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: context.read(skillSelectProvider).selectedSkills.isEmpty ? null : Colors.red,
+                                      ),
+                                      onPressed: context.read(skillSelectProvider).selectedSkills.isEmpty ? null : () => {
+                                        showDialog<void>(
+                                            context: context,
+                                            builder: (_) {
+                                              return ConfirmDialog(
+                                                AllCLEAR_DIALOG_TITLE,
+                                                AllCLEAR_DIALOG_CONTENT,
+                                                onOkTap: () => context.read(skillSelectProvider).allClear(),
+                                              );
+                                            }),
+                                        setState(() {
+                                          if (context.read(skillSelectProvider).selectedSkills == []) {
+                                            context.read(skillSelectProvider).selectedSkills = context.read(skillSelectProvider).selectedSkills;
+                                          }
+                                        })
+                                      },
+                                      highlightColor: Colors.deepOrange,
                                     ),
-                                    onPressed: context.read(skillSelectProvider).selectedSkills.isEmpty ? null : () => {
-                                      showDialog<void>(
-                                        context: context,
-                                        builder: (_) {
-                                          return ConfirmDialog(
-                                            AppString.AllClearDialogTitle,
-                                            AppString.AllClearDialogContent,
-                                            onOkTap: () => context.read(skillSelectProvider).allClear(),
-                                          );
-                                      }),
-                                      setState(() {
-                                        if (context.read(skillSelectProvider).selectedSkills == []) {
-                                          context.read(skillSelectProvider).selectedSkills = context.read(skillSelectProvider).selectedSkills;
-                                        }
-                                      })
-                                    },
-                                    highlightColor: Colors.deepOrange,
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      // 検索するボタン
-                      SizedBox(
-                        width: 120,
-                        height: 40,
-                        child: ElevatedButton(
-                            child: const Text(AppString.SIMULATE_BTN),
-                            onPressed: context.read(skillSelectProvider).selectedSkills.isEmpty ? null : () => Navigator.of(context).push(
-                                MaterialPageRoute<PageRoute<Widget>>(
-                                    builder: (_) => SimulateResultPage()
-                                )
-                            )
+                        // 検索するボタン
+                        SizedBox(
+                          width: 120,
+                          height: 40,
+                          child: ElevatedButton(
+                              child: const Text(SIMULATE_BTN),
+                              onPressed: context.read(skillSelectProvider).selectedSkills.isEmpty ? null : () => Navigator.of(context).push(
+                                  MaterialPageRoute<PageRoute<Widget>>(
+                                      builder: (_) => SimulateResultPage()
+                                  )
+                              )
+                          ),
                         ),
-                      ),
-                      // TODO: 後で削除する
-                      ElevatedButton(
-                        child: const Text('DB削除'),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.orange,
-                          onPrimary: Colors.white,
+                        // TODO: 後で削除する
+                        ElevatedButton(
+                          child: const Text('DB削除'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.orange,
+                            onPrimary: Colors.white,
+                          ),
+                          onPressed: () {
+                            DBManager.instance.destroyDatabase();
+                          },
                         ),
-                        onPressed: () {
-                          DBManager.instance.destroyDatabase();
-                        },
-                      ),
-                    ],
-                  );
-                }
+                      ],
+                    );
+                  }
               ),
             ),
           ],

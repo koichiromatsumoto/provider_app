@@ -19,10 +19,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     const locale = Locale("ja", "JP");
     return MaterialApp(
-      title: AppString.TITLE,
+      title: TITLE,
       theme: ThemeData(
-        primarySwatch: AppColor.THEME_COLOR,
-        accentColor: AppColor.SECOND_THEME_COLOR,
+        primarySwatch: THEME_COLOR,
+        accentColor: SECOND_THEME_COLOR,
       ),
       darkTheme: ThemeData.dark(),
       home: MainPage(),

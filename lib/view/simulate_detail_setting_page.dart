@@ -7,7 +7,7 @@ class SimulateDetailSettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
-        title: Text(AppString.SIMULATE_DETAIL_SETTING),
+        title: Text(SIMULATE_DETAIL_SETTING),
         centerTitle: true,
       ),
       body: Center(

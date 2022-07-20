@@ -32,7 +32,7 @@ class _WeaponSlotSelectAreaState extends State<WeaponSlotSelectArea> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                AppString.WEAPON_SLOT,
+                WEAPON_SLOT,
               ),
             ),
             WeaponSlotDropdown(widget.consumerContext.read(weaponSlotProvider).firstSlotValue, WeaponSlot.first),
@@ -44,7 +44,7 @@ class _WeaponSlotSelectAreaState extends State<WeaponSlotSelectArea> {
       decoration: BoxDecoration(
         border: const Border(
           bottom: const BorderSide(
-            color: AppColor.MAX_WIDTH_BTN_BORDER_COLOR,
+            color: MAX_WIDTH_BTN_BORDER_COLOR,
           ),
         ),
       ),

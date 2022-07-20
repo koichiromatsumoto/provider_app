@@ -27,8 +27,8 @@ class _SelectSkillFormState extends State<SelectSkillForm> {
       padding: EdgeInsets.only(bottom: 15),
       child: MultiSelectDialogField<Skill>(
         key: widget.multiSelectKey,
-        title: Text(AppString.SELECT_SKILLS),
-        buttonText: Text(AppString.SELECT_SKILLS_EXPLAIN),
+        title: Text(SELECT_SKILLS),
+        buttonText: Text(SELECT_SKILLS_EXPLAIN),
         items: widget.items,
         searchable: true,
         onConfirm: (values) {
