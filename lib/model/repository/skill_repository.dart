@@ -43,4 +43,17 @@ class SkillRepository {
     final db = await instance.database;
     await db.delete(table, where: 'id = ?', whereArgs: [id]);
   }
+
+  static Future<List<Skill>> updateFromApi(List<Skill> skills) async {
+    final db = await instance.database;
+    await db.execute(instance.createSkillsSql);
+    await db.delete(table);
+    for (Skill skill in skills) {
+      await db.insert(table, skill.toCreateMap());
+    }
+    var res = await db.rawQuery('SELECT * FROM $table ORDER BY id DESC');
+    List<Skill> list =
+    res.isNotEmpty ? res.map((c) => Skill.fromMap(c)).toList() : [];
+    return list;
+  }
 }

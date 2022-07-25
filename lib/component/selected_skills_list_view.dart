@@ -21,7 +21,7 @@ class _SelectedSkillsListViewState extends State<SelectedSkillsListView> {
   Widget build(BuildContext context) {
     List<int> skillLevelList(Skill skill) {
       List<int> rt = [];
-      for (var i = 1; i <= skill.getMaxLevel; i++) {
+      for (var i = 1; i <= skill.maxLevel; i++) {
         rt.add(i);
       }
       return rt;

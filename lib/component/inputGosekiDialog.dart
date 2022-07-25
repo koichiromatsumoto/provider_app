@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:provider_app/model/repository/goseki_repository.dart';
+import 'package:provider_app/provider/goseki_provider.dart';
 
 import '../constant/configs.dart';
 import '../constant/strings.dart';
@@ -28,7 +29,7 @@ Future<void> inputGosekiDialog(BuildContext context, List<Skill> skills) async {
 
         List<int> skillLevelList(Skill skill) {
           List<int> rt = [];
-          for (var i = 1; i <= skill.getMaxLevel; i++) {
+          for (var i = 1; i <= skill.maxLevel; i++) {
             rt.add(i);
           }
           return rt;
@@ -214,6 +215,7 @@ Future<void> inputGosekiDialog(BuildContext context, List<Skill> skills) async {
                 ),
                 onPressed: () {
                   GosekiRepository.create(goseki);
+                  context.read(gosekiProvider).addGoseki(goseki);
                   Navigator.pop(context);
                 },
                 style: TextButton.styleFrom(

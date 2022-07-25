@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:provider_app/API/request/simulate/model/simulate_skill.dart';
 import 'package:provider_app/model/entity/skills.dart';
 
 final skillSelectProvider = ChangeNotifierProvider(
@@ -8,6 +9,7 @@ final skillSelectProvider = ChangeNotifierProvider(
 
 class SkillSelector extends ChangeNotifier {
   List<Skill> selectedSkills = [];
+  List<SimulateSkill> simulateSkills = [];
   int defaultSkillLevel = 1;
 
   void handleChange(List<Skill> newValue) {
@@ -29,5 +31,12 @@ class SkillSelector extends ChangeNotifier {
   }
   VoidCallback allClear() {
     selectedSkills.clear();
+  }
+  List<SimulateSkill> getSimulateSkill() {
+    simulateSkills.clear();
+    for (var selectedSkill in selectedSkills) {
+      simulateSkills.add(SimulateSkill(skillId: selectedSkill.skillId, skillName: selectedSkill.skillName, selectedLevel: selectedSkill.selectedLevel));
+    }
+    return simulateSkills;
   }
 }

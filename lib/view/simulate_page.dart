@@ -19,8 +19,11 @@ import 'package:provider_app/view/simulate_detail_setting_page.dart';
 import 'package:provider_app/view/simulate_result_page.dart';
 import 'package:provider_app/provider/skill_select_provider.dart';
 
+import '../API/request/update_data/appdata_update.dart';
 import '../component/select_skill_form.dart';
 import '../component/weapon_slot_select_area.dart';
+import '../model/entity/armors.dart';
+import '../provider/goseki_provider.dart';
 import '../provider/navigation_history_provider.dart';
 
 class SimulatePage extends StatefulWidget {
@@ -43,6 +46,7 @@ class _SimulatePageState extends State<SimulatePage> {
 
   Future skillData() async {
     setState(() => isLoading = true);
+    await getUpdatedData();
     skills = await SkillRepository.getAll();
     setState(() => isLoading = false);
   }
@@ -50,6 +54,7 @@ class _SimulatePageState extends State<SimulatePage> {
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
+    context.read(gosekiProvider).setGosekiList();
     return Scaffold(
       appBar: AppBar(
         title: Text(SIMULATE_PAGE),
@@ -126,7 +131,7 @@ class _SimulatePageState extends State<SimulatePage> {
                               child: const Text(SIMULATE_BTN),
                               onPressed: context.read(skillSelectProvider).selectedSkills.isEmpty ? null : () => Navigator.of(context).push(
                                   MaterialPageRoute<PageRoute<Widget>>(
-                                      builder: (_) => SimulateResultPage()
+                                      builder: (_) => SimulateResultPage(context: context)
                                   )
                               )
                           ),

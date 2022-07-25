@@ -48,7 +48,9 @@ class _GosekiPageState extends State<GosekiPage> {
                 title: Text(GOSEKI_PAGE),
                 centerTitle: true,
               ),
-              body: CircularProgressIndicator()
+              body: const Center(
+                child: CircularProgressIndicator(),
+              )
           );
         }
       },

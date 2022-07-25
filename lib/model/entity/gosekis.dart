@@ -1,8 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:provider_app/model/repository/skill_repository.dart';
-
 class Goseki {
-
   final int id;
   int firstSkillId;
   String firstSkillName;
@@ -10,6 +6,9 @@ class Goseki {
   int secondSkillId;
   String secondSkillName;
   int secondSkillLevel;
+  int thirdSkillId;
+  String thirdSkillName;
+  int thirdSkillLevel;
   int firstSlot;
   int secondSlot;
   int thirdSlot;
@@ -25,6 +24,9 @@ class Goseki {
         this.secondSkillId,
         this.secondSkillName,
         this.secondSkillLevel,
+        this.thirdSkillId,
+        this.thirdSkillName,
+        this.thirdSkillLevel,
         this.firstSlot,
         this.secondSlot,
         this.thirdSlot,
@@ -41,6 +43,9 @@ class Goseki {
     secondSkillId: json['secondSkillId'] as int,
     secondSkillName: json['secondSkillName'] as String,
     secondSkillLevel: json['secondSkillLevel'] as int,
+    thirdSkillId: json['thirdSkillId'] as int,
+    thirdSkillName: json['thirdSkillName'] as String,
+    thirdSkillLevel: json['thirdSkillLevel'] as int,
     firstSlot: json['firstSlot'] as int,
     secondSlot: json['secondSlot'] as int,
     thirdSlot: json['thirdSlot'] as int,
@@ -57,6 +62,9 @@ class Goseki {
       'secondSkillId': secondSkillId,
       'secondSkillName': secondSkillName,
       'secondSkillLevel': secondSkillLevel,
+      'thirdSkillId': thirdSkillId,
+      'thirdSkillName': thirdSkillName,
+      'thirdSkillLevel': thirdSkillLevel,
       'firstSlot': firstSlot,
       'secondSlot': secondSlot,
       'thirdSlot': thirdSlot,
@@ -86,6 +94,9 @@ class Goseki {
       'secondSkillId': secondSkillId,
       'secondSkillName': secondSkillName,
       'secondSkillLevel': secondSkillLevel,
+      'thirdSkillId': thirdSkillId,
+      'thirdSkillName': thirdSkillName,
+      'thirdSkillLevel': thirdSkillLevel,
       'firstSlot': slotList[0],
       'secondSlot': slotList[1],
       'thirdSlot': slotList[2],
@@ -103,6 +114,9 @@ class Goseki {
       'secondSkillId': secondSkillId,
       'secondSkillName': secondSkillName,
       'secondSkillLevel': secondSkillLevel,
+      'thirdSkillId': thirdSkillId,
+      'thirdSkillName': thirdSkillName,
+      'thirdSkillLevel': thirdSkillLevel,
       'firstSlot': firstSlot,
       'secondSlot': secondSlot,
       'thirdSlot': thirdSlot,

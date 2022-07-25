@@ -22,7 +22,7 @@ class WeaponSlot{
 
 enum ArmorPart{
   head,
-  torso,
+  body,
   arm,
   waist,
   leg
@@ -31,7 +31,7 @@ enum ArmorPart{
 extension ArmorPartExtension on ArmorPart {
   static final armorParts = {
     ArmorPart.head: 0,
-    ArmorPart.torso: 1,
+    ArmorPart.body: 1,
     ArmorPart.arm: 2,
     ArmorPart.waist: 3,
     ArmorPart.leg: 4
