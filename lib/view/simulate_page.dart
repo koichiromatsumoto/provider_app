@@ -19,7 +19,7 @@ import 'package:provider_app/view/simulate_detail_setting_page.dart';
 import 'package:provider_app/view/simulate_result_page.dart';
 import 'package:provider_app/provider/skill_select_provider.dart';
 
-import '../API/request/update_data/appdata_update.dart';
+import '../API/request/update_data/appdata_update_api.dart';
 import '../component/select_skill_form.dart';
 import '../component/weapon_slot_select_area.dart';
 import '../model/entity/armors.dart';

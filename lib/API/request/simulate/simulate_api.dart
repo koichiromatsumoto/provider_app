@@ -52,8 +52,10 @@ Future fetchSimulate(List<SimulateSkill> simulateSkills, List<SimulateGoseki> si
       ResGoseki resGoseki = ResGoseki.fromSimulateApiMap(jsonResArmor["goseki"]);
       int maxDefenseNum = jsonResArmor["maxDefenseNum"];
       List<ResActivateSkillInfo> activateSkills = [];
-      for (var jsonResActivateSkillInfo in jsonResArmor["activateSkills"]){
-        activateSkills.add(ResActivateSkillInfo.fromSimulateApiMap(jsonResActivateSkillInfo));
+      if (jsonResArmor["activateSkills"].length > 0) {
+        for (var jsonResActivateSkillInfo in jsonResArmor["activateSkills"]){
+          activateSkills.add(ResActivateSkillInfo.fromSimulateApiMap(jsonResActivateSkillInfo));
+        }
       }
       resArmors.add(ResArmor(resArmorInfos: resArmorInfos, resOrnamentInfos: resOrnamentInfos, resGoseki: resGoseki, maxDefenseNum: maxDefenseNum, activateSkills: activateSkills));
     }
@@ -80,6 +82,6 @@ Future fetchSimulate(List<SimulateSkill> simulateSkills, List<SimulateGoseki> si
     );
     return simulateResponse;
   } else {
-    throw Exception('Failed to Load AppdataUpdate');
+    throw Exception('Failed to Load SimulateAPI');
   }
 }

@@ -78,6 +78,6 @@ Future<List<Armor>> getUpdatedData() async {
     }
     await SkillRepository.updateFromApi(skills);
   } else {
-    throw Exception('Failed to Load AppdataUpdate');
+    throw Exception('Failed to Load AppdataUpdateAPI');
   }
 }
