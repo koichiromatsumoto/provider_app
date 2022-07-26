@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:provider_app/API/reponse/simulate/model/simulate_response.dart';
 import 'package:provider_app/API/request/simulate/model/simulate_skill.dart';
 import 'package:provider_app/constant/configs.dart';
 import 'package:provider_app/model/repository/goseki_repository.dart';
@@ -10,10 +11,13 @@ import 'package:provider_app/provider/weapon_slot_provider.dart';
 
 import '../API/reponse/simulate/model/res_armor.dart';
 import '../API/reponse/simulate/model/res_armor_info.dart';
+import '../API/reponse/simulate/model/res_goseki.dart';
 import '../API/request/simulate/model/simulate_goseki.dart';
 import '../API/request/simulate/model/simulate_weapon_slot.dart';
 import '../API/request/simulate/simulate.dart';
 import '../API/request/update_data/appdata_update.dart';
+import '../component/simulate_result_text.dart';
+import '../constant/colors.dart';
 import '../model/entity/armors.dart';
 import '../model/entity/gosekis.dart';
 import '../model/entity/skills.dart';
@@ -28,7 +32,7 @@ class SimulateResultPage extends StatefulWidget {
 
 class _SimulateResultPageState extends State<SimulateResultPage> {
   bool isLoading = false;
-  List<ResArmor> resArmors;
+  SimulateResponse simulateResponse;
 
   @override
   void initState() {
@@ -39,7 +43,8 @@ class _SimulateResultPageState extends State<SimulateResultPage> {
     List<SimulateSkill> simulateSkills = widget.context.read(skillSelectProvider).getSimulateSkill();
     List<SimulateGoseki> simulateGoseki = widget.context.read(gosekiProvider).getSimulateGoseki();
     SimulateWeaponSlot simulateWeaponSlot = widget.context.read(weaponSlotProvider).getSimulateWeaponSlot();
-    return resArmors = await fetchSimulate(simulateSkills, simulateGoseki, [], simulateWeaponSlot, 0);
+    simulateResponse = await fetchSimulate(simulateSkills, simulateGoseki, [], simulateWeaponSlot, 0);
+    return simulateResponse;
   }
 
   @override
@@ -66,12 +71,12 @@ class _SimulateResultPageState extends State<SimulateResultPage> {
     );
   }
 
-  Widget mainView(BuildContext context, List<ResArmor> resArmors) {
+  Widget mainView(BuildContext context, SimulateResponse simulateResponse) {
     return Container(
       padding: EdgeInsets.only(bottom: 80),
       child: Column(
           children: <Widget>[
-            resArmors.first.resArmorInfos.length == 0
+            simulateResponse.resArmors.first.resArmorInfos.length == 0
                 ?
             Container(
                 padding: EdgeInsets.fromLTRB(0, 50, 0, 20),
@@ -89,85 +94,183 @@ class _SimulateResultPageState extends State<SimulateResultPage> {
             )
                 :
             Expanded(
-              child: ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  ResArmorInfo headArmorInfo = new ResArmorInfo();
-                  ResArmorInfo bodyArmorInfo = new ResArmorInfo();
-                  ResArmorInfo armArmorInfo = new ResArmorInfo();
-                  ResArmorInfo wstArmorInfo = new ResArmorInfo();
-                  ResArmorInfo legArmorInfo = new ResArmorInfo();
-                  for (var resArmorInfo in resArmors[index]
-                      .resArmorInfos) {
-                    if (resArmorInfo.part ==
-                        ArmorPartExtension.armorParts[ArmorPart.head]) {
-                      headArmorInfo = resArmorInfo;
-                    } else if (resArmorInfo.part ==
-                        ArmorPartExtension.armorParts[ArmorPart.body]) {
-                      bodyArmorInfo = resArmorInfo;
-                    } else if (resArmorInfo.part ==
-                        ArmorPartExtension.armorParts[ArmorPart.arm]) {
-                      armArmorInfo = resArmorInfo;
-                    } else if (resArmorInfo.part ==
-                        ArmorPartExtension.armorParts[ArmorPart.waist]) {
-                      wstArmorInfo = resArmorInfo;
-                    } else if (resArmorInfo.part ==
-                        ArmorPartExtension.armorParts[ArmorPart.leg]) {
-                      legArmorInfo = resArmorInfo;
-                    }
-                  }
-                  return Container(
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      child: Column(
-                        children: [
-                          if (index == 0) Divider(
-                            color: Colors.black,
-                            thickness: 1.5,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
+              child: MediaQuery.removePadding(
+                context: context,
+                removeBottom: true,
+                child: Container(
+                  color: LISTVIEW_BACKGROUND_COLOR,
+                  child: Scrollbar(
+                    child: ListView.builder(
+                      itemBuilder: (BuildContext context, int index) {
+                        ResArmorInfo headArmorInfo = new ResArmorInfo();
+                        ResArmorInfo bodyArmorInfo = new ResArmorInfo();
+                        ResArmorInfo armArmorInfo = new ResArmorInfo();
+                        ResArmorInfo wstArmorInfo = new ResArmorInfo();
+                        ResArmorInfo legArmorInfo = new ResArmorInfo();
+                        for (var resArmorInfo in simulateResponse.resArmors[index].resArmorInfos) {
+                          if (resArmorInfo.part ==
+                              ArmorPartExtension.armorParts[ArmorPart.head]) {
+                            headArmorInfo = resArmorInfo;
+                          } else if (resArmorInfo.part ==
+                              ArmorPartExtension.armorParts[ArmorPart.body]) {
+                            bodyArmorInfo = resArmorInfo;
+                          } else if (resArmorInfo.part ==
+                              ArmorPartExtension.armorParts[ArmorPart.arm]) {
+                            armArmorInfo = resArmorInfo;
+                          } else if (resArmorInfo.part ==
+                              ArmorPartExtension.armorParts[ArmorPart.waist]) {
+                            wstArmorInfo = resArmorInfo;
+                          } else if (resArmorInfo.part ==
+                              ArmorPartExtension.armorParts[ArmorPart.leg]) {
+                            legArmorInfo = resArmorInfo;
+                          }
+                        }
+                        ResGoseki goseki = simulateResponse.resArmors[index].resGoseki;
+                        String weaponSlotText =
+                            simulateResponse.resWeaponSlot.firstSlot.toString() + "-" +
+                            simulateResponse.resWeaponSlot.secondSlot.toString() + "-" +
+                            simulateResponse.resWeaponSlot.thirdSlot.toString();
+                        String gosekiText = goseki.gosekiId == null ?
+                            "なし" :
+                            goseki.secondSkillName == "" ?
+                            goseki.firstSkillName + ":" + goseki.firstSkillLevel.toString() + " "
+                          + "スロ" + goseki.firstSlot.toString() + "-" + goseki.secondSlot.toString() + "-" + goseki.thirdSlot.toString() :
+                            goseki.firstSkillName + ":" + goseki.firstSkillLevel.toString() + " "
+                          + goseki.secondSkillName + ":" + goseki.secondSkillLevel.toString() + " "
+                          + "スロ" + goseki.firstSlot.toString() + "-" + goseki.secondSlot.toString() + "-" + goseki.thirdSlot.toString();
+                        return Column(
+                          children: [
+                            Container(
+                                decoration: BoxDecoration(
+                                  border: index != simulateResponse.resArmors.length - 1 ? const Border(
+                                    bottom: const BorderSide(
+                                    color: Colors.black,
+                                      width: 1,
+                                    )
+                                  ) : null,
+                                ),
+                                child: TextButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.white,
+                                      onPrimary: Colors.black87,
+                                      // side: BorderSide(
+                                      //   width: 0,
+                                      // ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                        Radius.circular(0),
+                                        ),
+                                      )
+                                    ),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
                                       children: [
-                                        Text(
-                                          "頭：" + headArmorInfo.armorName,
+                                        if (index == 0)
+                                            Padding(padding: EdgeInsets.only(top: 10))
+                                        else
+                                            Padding(padding: EdgeInsets.only(top: 5)),
+                                        Padding(
+                                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Flexible(
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Flexible(
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment
+                                                              .start,
+                                                          children: [
+                                                            simulateResultText(
+                                                              "【武器スロ】" + weaponSlotText,
+                                                            ),
+                                                            simulateResultText(
+                                                              "【頭】" + headArmorInfo.armorName,
+                                                            ),
+                                                            simulateResultText(
+                                                              "【胴】" + bodyArmorInfo.armorName,
+                                                            ),
+                                                            simulateResultText(
+                                                              "【腕】" + armArmorInfo.armorName,
+                                                            ),
+                                                            simulateResultText(
+                                                              "【腰】" + wstArmorInfo.armorName,
+                                                            ),
+                                                            simulateResultText(
+                                                              "【脚】" + legArmorInfo.armorName,
+                                                            ),
+                                                            simulateResultText(
+                                                              "【護石】" + gosekiText,
+                                                              // "【護石】" + "貫通弾・貫通矢強化3 通常弾・通常矢強化3 スロ 3-3-3",
+                                                            ),
+                                                          ],
+                                                        )
+                                                    ),
+                                                    Container(
+                                                        margin: EdgeInsets.only(left: 10),
+                                                        width: 75,
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment
+                                                              .start,
+                                                          children: [
+                                                            simulateResultText(
+                                                              "防御力: " + simulateResponse.resArmors[index].maxDefenseNum.toString(),
+                                                            ),
+                                                            simulateResultText(
+                                                              "火耐性: " + "10",
+                                                            ),
+                                                            simulateResultText(
+                                                              "水耐性: " + "-25",
+                                                            ),
+                                                            simulateResultText(
+                                                              "雷耐性: " + "0",
+                                                            ),
+                                                            simulateResultText(
+                                                              "氷耐性: " + "0",
+                                                            ),
+                                                            simulateResultText(
+                                                              "龍耐性: " + "0",
+                                                            ),
+                                                          ],
+                                                        )
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 20,
+                                                child: Icon(
+                                                    Icons.arrow_forward_ios
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        Text(
-                                          "胴：" + bodyArmorInfo.armorName,
-                                        ),
-                                        Text(
-                                          "腕：" + armArmorInfo.armorName,
-                                        ),
-                                        Text(
-                                          "腰：" + wstArmorInfo.armorName,
-                                        ),
-                                        Text(
-                                          "脚：" + legArmorInfo.armorName,
+                                        if (index == simulateResponse.resArmors.length - 1) Padding(
+                                          padding: EdgeInsets.only(bottom: 10),
+                                        ) else Padding(
+                                          padding: EdgeInsets.only(bottom: 5),
                                         ),
                                       ],
                                     )
-                                ),
-                              ],
+                                )
                             ),
-                          ),
-                          Divider(
-                            color: Colors.black,
-                            thickness: 1.5,
-                          )
-                        ],
-                      )
-                  );
-                },
-                itemCount: resArmors.length,
-              ),
+                          ],
+                        );
+                      },
+                      itemCount: simulateResponse.resArmors.length,
+                    ),
+                  )
+                )
+              )
             ),
-            ElevatedButton(
-                child: const Text('もとのページに戻る'),
-                onPressed: () => Navigator.of(context).pop()
-            ),
+            // ElevatedButton(
+            //     child: const Text('もとのページに戻る'),
+            //     onPressed: () => Navigator.of(context).pop()
+            // ),
           ]
       )
     );

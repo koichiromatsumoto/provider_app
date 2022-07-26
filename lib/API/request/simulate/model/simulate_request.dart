@@ -11,6 +11,8 @@ class SimulateRequest {
   final SimulateWeaponSlot simulateWeaponSlot;
   final int count;
   final int minDefenseNum;
+  // final List<LastArmor> lastArmors;
+  // final int lastDefenseNum;
 
   SimulateRequest({
     this.simulateSkills,

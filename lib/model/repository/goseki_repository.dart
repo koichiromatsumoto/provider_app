@@ -20,6 +20,14 @@ class GosekiRepository {
     return list;
   }
 
+  static getById(int id) async {
+    final db = await instance.database;
+    var res = await db.rawQuery('SELECT * FROM $table WHERE id = $id ORDER BY id ASC');
+    Goseki goseki =
+    res.isNotEmpty ? res.map((c) => Goseki.fromMap(c)).toList()[0] : [];
+    return goseki;
+  }
+
   static update(Goseki goseki) async {
     final db = await instance.database;
     var res = await db.update(
