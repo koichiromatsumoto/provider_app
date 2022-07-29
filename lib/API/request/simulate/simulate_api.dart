@@ -17,7 +17,7 @@ import '../../reponse/simulate/model/res_goseki.dart';
 import '../../reponse/simulate/model/res_skill.dart';
 import '../../reponse/simulate/model/simulate_response.dart';
 
-Future fetchSimulate(List<SimulateSkill> simulateSkills, List<SimulateGoseki> simulateGosekis, List<ExcludedArmor> excludedArmors, SimulateWeaponSlot simulateWeaponSlot, int minDefenseNum) async {
+Future fetchSimulate(SimulateRequest simulateRequest) async {
   // var uri = Uri.parse('$APPDATA_UPDATE_API');
   var httpsUri = Uri(
     scheme: 'http',
@@ -26,8 +26,7 @@ Future fetchSimulate(List<SimulateSkill> simulateSkills, List<SimulateGoseki> si
     path: '/sim',
   );
 
-  var request = new SimulateRequest(simulateSkills: simulateSkills, simulateGosekis: simulateGosekis, excludedArmors: excludedArmors, simulateWeaponSlot: simulateWeaponSlot, minDefenseNum: minDefenseNum, count: 10);
-  var requestJson = json.encode(request.toJson());
+  var requestJson = json.encode(simulateRequest.toJson());
 
   final res = await http.post(
       httpsUri,

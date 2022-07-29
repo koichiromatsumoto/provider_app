@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:hooks_riverpod/all.dart';
-import 'package:multi_select_flutter/util/multi_select_item.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:provider_app/model/repository/goseki_repository.dart';
 import 'package:provider_app/provider/goseki_provider.dart';
 
@@ -12,7 +10,7 @@ import '../model/entity/gosekis.dart';
 import '../model/entity/skills.dart';
 import '../provider/skill_select_provider.dart';
 
-Future<void> inputGosekiDialog(BuildContext context, List<Skill> skills) async {
+Future<void> inputGosekiDialog(BuildContext context, WidgetRef ref, List<Skill> skills) async {
   final _formKey = GlobalKey<FormState>();
   return showDialog(
       context: context,
@@ -215,7 +213,7 @@ Future<void> inputGosekiDialog(BuildContext context, List<Skill> skills) async {
                 ),
                 onPressed: () {
                   GosekiRepository.create(goseki);
-                  context.read(gosekiProvider).addGoseki(goseki);
+                  ref.read(gosekiProvider).addGoseki(goseki);
                   Navigator.pop(context);
                 },
                 style: TextButton.styleFrom(

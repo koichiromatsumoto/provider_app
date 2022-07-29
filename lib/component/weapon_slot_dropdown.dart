@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/all.dart';
-
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../constant/configs.dart';
 import '../provider/weapon_slot_provider.dart';
 
-class WeaponSlotDropdown extends StatefulWidget {
+class WeaponSlotDropdown extends ConsumerStatefulWidget {
   int value;
   int num;
   WeaponSlotDropdown(this.value, this.num);
@@ -14,18 +13,18 @@ class WeaponSlotDropdown extends StatefulWidget {
   _WeaponSlotDropdownState createState() => _WeaponSlotDropdownState();
 }
 
-class _WeaponSlotDropdownState extends State<WeaponSlotDropdown> {
+class _WeaponSlotDropdownState extends ConsumerState<WeaponSlotDropdown> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<int>(
       value: widget.value,
       onChanged: (newValue) {
         if (widget.num == WeaponSlot.first) {
-          context.read(weaponSlotProvider).setFirstSlot(newValue);
+          ref.read(weaponSlotProvider).setFirstSlot(newValue);
         } else if (widget.num == WeaponSlot.second) {
-          context.read(weaponSlotProvider).setSecondSlot(newValue);
+          ref.read(weaponSlotProvider).setSecondSlot(newValue);
         } else {
-          context.read(weaponSlotProvider).setThirdSlot(newValue);
+          ref.read(weaponSlotProvider).setThirdSlot(newValue);
         }
         setState(() {
           widget.value = newValue;

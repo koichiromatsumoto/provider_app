@@ -14,4 +14,14 @@ class SimulateSkill {
     'skillName': skillName,
     'selectedLevel': selectedLevel
   };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(other, this) || other is SimulateSkill &&
+          skillId == other.skillId &&
+          skillName == other.skillName &&
+          selectedLevel == other.selectedLevel;
+
+  @override
+  int get hashCode => Object.hashAll([skillId, skillName, selectedLevel]);
 }

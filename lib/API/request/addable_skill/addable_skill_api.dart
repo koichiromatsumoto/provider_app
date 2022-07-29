@@ -8,7 +8,7 @@ import 'package:provider_app/API/request/simulate/model/simulate_weapon_slot.dar
 
 import '../../reponse/addable_skill/model/res_addable_skills.dart';
 
-Future addableSkillSimulate(List<SimulateSkill> simulateSkills, List<SimulateGoseki> simulateGosekis, List<ExcludedArmor> excludedArmors, SimulateWeaponSlot simulateWeaponSlot, int minDefenseNum) async {
+Future addableSkillSimulate(SimulateRequest simulateRequest) async {
   // var uri = Uri.parse('$APPDATA_UPDATE_API');
   var httpsUri = Uri(
     scheme: 'http',
@@ -17,8 +17,7 @@ Future addableSkillSimulate(List<SimulateSkill> simulateSkills, List<SimulateGos
     path: '/addable_sim',
   );
 
-  var request = new SimulateRequest(simulateSkills: simulateSkills, simulateGosekis: simulateGosekis, excludedArmors: excludedArmors, simulateWeaponSlot: simulateWeaponSlot, minDefenseNum: minDefenseNum, count: 10);
-  var requestJson = json.encode(request.toJson());
+  var requestJson = json.encode(simulateRequest.toJson());
 
   final res = await http.post(
       httpsUri,

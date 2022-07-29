@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:provider_app/constant/colors.dart';
 import 'package:provider_app/constant/strings.dart';
 import 'package:provider_app/view/simulate_page.dart';
@@ -8,15 +8,15 @@ import 'package:provider_app/provider/navigation_history_provider.dart';
 
 import 'favorite_page.dart';
 import 'goseki_page.dart';
-class MainPage extends StatelessWidget {
+class MainPage extends ConsumerWidget {
 
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         body: Consumer(
             builder: (context, watch, child) {
               return CupertinoTabScaffold(
-                  controller: context.read(navigationHistoryProvider).controller,
+                  controller: ref.read(navigationHistoryProvider).controller,
                   tabBar: CupertinoTabBar(
                     items: const <BottomNavigationBarItem>[
                       BottomNavigationBarItem(

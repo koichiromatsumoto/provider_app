@@ -14,7 +14,7 @@ class SkillRepository {
 
   static getAll() async {
     final db = await instance.database;
-    var res = await db.rawQuery('SELECT * FROM $table ORDER BY id ASC');
+    var res = await db.rawQuery('SELECT * FROM $table ORDER BY skillId ASC');
     List<Skill> list =
     res.isNotEmpty ? res.map((c) => Skill.fromMap(c)).toList() : [];
     return list;

@@ -2,15 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/all.dart';
-import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
-import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
-import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:provider_app/component/confirm_dialog.dart';
 import 'package:provider_app/component/devise_max_width_btn.dart';
 import 'package:provider_app/component/selected_skills_list_view.dart';
-import 'package:provider_app/constant/configs.dart';
 import 'package:provider_app/constant/strings.dart';
 import 'package:provider_app/model/db/db_manager.dart';
 import 'package:provider_app/model/entity/skills.dart';
@@ -22,17 +18,15 @@ import 'package:provider_app/provider/skill_select_provider.dart';
 import '../API/request/update_data/appdata_update_api.dart';
 import '../component/select_skill_form.dart';
 import '../component/weapon_slot_select_area.dart';
-import '../model/entity/armors.dart';
 import '../provider/goseki_provider.dart';
-import '../provider/navigation_history_provider.dart';
 
-class SimulatePage extends StatefulWidget {
+class SimulatePage extends ConsumerStatefulWidget {
 
   @override
   _SimulatePageState createState() => new _SimulatePageState();
 }
 
-class _SimulatePageState extends State<SimulatePage> {
+class _SimulatePageState extends ConsumerState<SimulatePage> {
   List<Skill> skills;
   var items = [];
   final _multiSelectKey = GlobalKey<FormFieldState>();
@@ -54,7 +48,7 @@ class _SimulatePageState extends State<SimulatePage> {
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
-    context.read(gosekiProvider).setGosekiList();
+    ref.read(gosekiProvider).setGosekiList();
     return Scaffold(
       appBar: AppBar(
         title: Text(SIMULATE_PAGE),
@@ -97,21 +91,21 @@ class _SimulatePageState extends State<SimulatePage> {
                                     child: IconButton(
                                       icon: Icon(
                                         Icons.delete,
-                                        color: context.read(skillSelectProvider).selectedSkills.isEmpty ? null : Colors.red,
+                                        color: ref.read(skillSelectProvider).selectedSkills.isEmpty ? null : Colors.red,
                                       ),
-                                      onPressed: context.read(skillSelectProvider).selectedSkills.isEmpty ? null : () => {
+                                      onPressed: ref.read(skillSelectProvider).selectedSkills.isEmpty ? null : () => {
                                         showDialog<void>(
                                             context: context,
                                             builder: (_) {
                                               return ConfirmDialog(
                                                 AllCLEAR_DIALOG_TITLE,
                                                 AllCLEAR_DIALOG_CONTENT,
-                                                onOkTap: () => context.read(skillSelectProvider).allClear(),
+                                                onOkTap: () => ref.read(skillSelectProvider).allClear(),
                                               );
                                             }),
                                         setState(() {
-                                          if (context.read(skillSelectProvider).selectedSkills == []) {
-                                            context.read(skillSelectProvider).selectedSkills = context.read(skillSelectProvider).selectedSkills;
+                                          if (ref.read(skillSelectProvider).selectedSkills == []) {
+                                            ref.read(skillSelectProvider).selectedSkills = ref.read(skillSelectProvider).selectedSkills;
                                           }
                                         })
                                       },
@@ -129,7 +123,7 @@ class _SimulatePageState extends State<SimulatePage> {
                           height: 40,
                           child: ElevatedButton(
                               child: const Text(SIMULATE_BTN),
-                              onPressed: context.read(skillSelectProvider).selectedSkills.isEmpty ? null : () => Navigator.of(context).push(
+                              onPressed: ref.read(skillSelectProvider).selectedSkills.isEmpty ? null : () => Navigator.of(context).push(
                                   MaterialPageRoute<PageRoute<Widget>>(
                                       builder: (_) => SimulateResultPage(context: context)
                                   )

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:provider_app/constant/strings.dart';
 import 'package:provider_app/model/db/db_manager.dart';
 
@@ -11,12 +11,12 @@ import '../model/entity/skills.dart';
 import '../model/repository/goseki_repository.dart';
 import '../model/repository/skill_repository.dart';
 
-class GosekiPage extends StatefulWidget {
+class GosekiPage extends ConsumerStatefulWidget {
   @override
   _GosekiPageState createState() => new _GosekiPageState();
 }
 
-class _GosekiPageState extends State<GosekiPage> {
+class _GosekiPageState extends ConsumerState<GosekiPage> {
   List<Skill> skills;
   bool isLoading = false;
 
@@ -63,7 +63,7 @@ class _GosekiPageState extends State<GosekiPage> {
         actions: [
           TextButton(
               onPressed: () {
-                inputGosekiDialog(context, skills);
+                inputGosekiDialog(context, ref, skills);
               },
               child: Text(
                 "追加",

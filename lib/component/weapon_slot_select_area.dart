@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:provider_app/component/weapon_slot_dropdown.dart';
 
 import '../constant/colors.dart';
@@ -9,7 +9,7 @@ import '../constant/strings.dart';
 import '../provider/weapon_slot_provider.dart';
 
 // 武器スロット選択エリア
-class WeaponSlotSelectArea extends StatefulWidget {
+class WeaponSlotSelectArea extends ConsumerStatefulWidget {
   BuildContext consumerContext;
   WeaponSlotSelectArea(this.consumerContext);
 
@@ -17,7 +17,7 @@ class WeaponSlotSelectArea extends StatefulWidget {
   _WeaponSlotSelectAreaState createState() => _WeaponSlotSelectAreaState();
 }
 
-class _WeaponSlotSelectAreaState extends State<WeaponSlotSelectArea> {
+class _WeaponSlotSelectAreaState extends ConsumerState<WeaponSlotSelectArea> {
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
@@ -35,9 +35,9 @@ class _WeaponSlotSelectAreaState extends State<WeaponSlotSelectArea> {
                 WEAPON_SLOT,
               ),
             ),
-            WeaponSlotDropdown(widget.consumerContext.read(weaponSlotProvider).firstSlotValue, WeaponSlot.first),
-            WeaponSlotDropdown(widget.consumerContext.read(weaponSlotProvider).secondSlotValue, WeaponSlot.second),
-            WeaponSlotDropdown(widget.consumerContext.read(weaponSlotProvider).thirdSlotValue, WeaponSlot.third),
+            WeaponSlotDropdown(ref.read(weaponSlotProvider).firstSlotValue, WeaponSlot.first),
+            WeaponSlotDropdown(ref.read(weaponSlotProvider).secondSlotValue, WeaponSlot.second),
+            WeaponSlotDropdown(ref.read(weaponSlotProvider).thirdSlotValue, WeaponSlot.third),
           ],
         ),
       ),

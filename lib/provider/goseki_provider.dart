@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:provider_app/model/repository/goseki_repository.dart';
 
 import '../API/request/simulate/model/simulate_goseki.dart';

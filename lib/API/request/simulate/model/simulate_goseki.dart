@@ -1,5 +1,3 @@
-import '../../../../model/entity/gosekis.dart';
-
 class SimulateGoseki {
   final int gosekiId;
   final int firstSkillId;
@@ -46,4 +44,38 @@ class SimulateGoseki {
     'secondSlot': secondSlot,
     'thirdSlot': thirdSlot,
   };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(other, this) || other is SimulateGoseki &&
+          gosekiId == other.gosekiId &&
+          firstSkillId == other.firstSkillId &&
+          firstSkillName == other.firstSkillName &&
+          firstSkillLevel == other.firstSkillLevel &&
+          secondSkillId == other.secondSkillId &&
+          secondSkillName == other.secondSkillName &&
+          secondSkillLevel == other.secondSkillLevel &&
+          thirdSkillId == other.thirdSkillId &&
+          thirdSkillName == other.thirdSkillName &&
+          thirdSkillLevel == other.thirdSkillLevel &&
+          firstSlot == other.firstSlot &&
+          secondSlot == other.secondSlot &&
+          thirdSlot == other.thirdSlot;
+
+  @override
+  int get hashCode => Object.hashAll([
+    gosekiId,
+    firstSkillId,
+    firstSkillName,
+    firstSkillLevel,
+    secondSkillId,
+    secondSkillName,
+    secondSkillLevel,
+    thirdSkillId,
+    thirdSkillName,
+    thirdSkillLevel,
+    firstSlot,
+    secondSlot,
+    thirdSlot
+  ]);
 }

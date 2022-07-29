@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../constant/strings.dart';
-import '../provider/navigation_history_provider.dart';
 
-class ConfirmDialog extends StatefulWidget {
+class ConfirmDialog extends ConsumerStatefulWidget {
   final String title;
   final String content;
   final VoidCallback onOkTap;
@@ -16,7 +15,7 @@ class ConfirmDialog extends StatefulWidget {
   _ConfirmDialogState createState() => _ConfirmDialogState();
 }
 
-class _ConfirmDialogState extends State<ConfirmDialog> {
+class _ConfirmDialogState extends ConsumerState<ConfirmDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

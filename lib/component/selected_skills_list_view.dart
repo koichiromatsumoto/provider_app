@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/all.dart';
-
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../constant/colors.dart';
 import '../constant/strings.dart';
 import '../model/entity/skills.dart';
 import '../provider/skill_select_provider.dart';
 
 // 選択スキルリストビュー
-class SelectedSkillsListView extends StatefulWidget {
+class SelectedSkillsListView extends ConsumerStatefulWidget {
   BuildContext consumerContext;
   SelectedSkillsListView(this.consumerContext);
 
@@ -16,7 +15,7 @@ class SelectedSkillsListView extends StatefulWidget {
   _SelectedSkillsListViewState createState() => _SelectedSkillsListViewState();
 }
 
-class _SelectedSkillsListViewState extends State<SelectedSkillsListView> {
+class _SelectedSkillsListViewState extends ConsumerState<SelectedSkillsListView> {
   @override
   Widget build(BuildContext context) {
     List<int> skillLevelList(Skill skill) {
@@ -45,7 +44,7 @@ class _SelectedSkillsListViewState extends State<SelectedSkillsListView> {
                               icon: Icon(Icons.clear),
                               onPressed: () {
                                 setState(() {
-                                  widget.consumerContext.read(skillSelectProvider).clear(index);
+                                  ref.read(skillSelectProvider).clear(index);
                                 });
                               },
                               highlightColor: SECOND_THEME_COLOR,
@@ -55,7 +54,7 @@ class _SelectedSkillsListViewState extends State<SelectedSkillsListView> {
                           Container(
                             alignment: Alignment.topLeft,
                             child: Text(
-                                widget.consumerContext.read(skillSelectProvider).selectedSkills.elementAt(index).skillName,
+                                ref.read(skillSelectProvider).selectedSkills.elementAt(index).skillName,
                                 style: TextStyle(fontSize: 15)
                             ),
                           ),
@@ -68,13 +67,13 @@ class _SelectedSkillsListViewState extends State<SelectedSkillsListView> {
                                       LEVEL
                                   ),
                                   DropdownButton<int>(
-                                    value: widget.consumerContext.read(skillSelectProvider).selectedSkills.elementAt(index).selectedLevel,
+                                    value: ref.read(skillSelectProvider).selectedSkills.elementAt(index).selectedLevel,
                                     onChanged: (newValue) {
                                       setState(() {
-                                        widget.consumerContext.read(skillSelectProvider).setSelectedSkillLevel(widget.consumerContext.read(skillSelectProvider).selectedSkills.elementAt(index), newValue);
+                                        ref.read(skillSelectProvider).setSelectedSkillLevel(ref.read(skillSelectProvider).selectedSkills.elementAt(index), newValue);
                                       });
                                     },
-                                    items: skillLevelList(widget.consumerContext.read(skillSelectProvider).selectedSkills.elementAt(index)).map<DropdownMenuItem<int>>((int value) {
+                                    items: skillLevelList(ref.read(skillSelectProvider).selectedSkills.elementAt(index)).map<DropdownMenuItem<int>>((int value) {
                                       return DropdownMenuItem<int>(
                                         value: value,
                                         child: Text(value.toString()),
@@ -88,7 +87,7 @@ class _SelectedSkillsListViewState extends State<SelectedSkillsListView> {
                       )
                   );
                 },
-                itemCount: widget.consumerContext.read(skillSelectProvider).selectedSkills != null ? widget.consumerContext.read(skillSelectProvider).selectedSkills.length : 0
+                itemCount: ref.read(skillSelectProvider).selectedSkills != null ? ref.read(skillSelectProvider).selectedSkills.length : 0
             ),
           ),
         ),

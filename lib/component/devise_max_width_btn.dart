@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../constant/colors.dart';
 import '../provider/navigation_history_provider.dart';
 
-class DeviseMaxWidthBtn extends StatelessWidget {
+class DeviseMaxWidthBtn extends ConsumerWidget {
   final String text;
   final int tabIndex;
   final dynamic nextPage;
 
   @override
   DeviseMaxWidthBtn(this.text, this.tabIndex, this.nextPage);
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Container(
       width: deviceWidth,
@@ -39,7 +39,7 @@ class DeviseMaxWidthBtn extends StatelessWidget {
             () => Navigator.of(context).push(
             MaterialPageRoute<PageRoute<Widget>>(
                 builder: (_) => nextPage)) :
-            () => context.read(navigationHistoryProvider).moveTo(tabIndex),
+            () => ref.read(navigationHistoryProvider).moveTo(tabIndex),
       ),
       decoration: BoxDecoration(
         border: const Border(

@@ -1,30 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:provider_app/API/reponse/addable_skill/model/res_addable_skills.dart';
 import 'package:provider_app/API/reponse/simulate/model/simulate_response.dart';
+import 'package:provider_app/API/request/simulate/model/simulate_request.dart';
 import 'package:provider_app/API/request/simulate/model/simulate_skill.dart';
 import 'package:provider_app/constant/configs.dart';
-import 'package:provider_app/model/repository/goseki_repository.dart';
 import 'package:provider_app/provider/goseki_provider.dart';
+import 'package:provider_app/provider/simulate_result_provider.dart';
 import 'package:provider_app/provider/skill_select_provider.dart';
 import 'package:provider_app/provider/weapon_slot_provider.dart';
 
-import '../API/reponse/simulate/model/res_armor.dart';
 import '../API/reponse/simulate/model/res_armor_info.dart';
 import '../API/reponse/simulate/model/res_goseki.dart';
 import '../API/request/addable_skill/addable_skill_api.dart';
 import '../API/request/simulate/model/simulate_goseki.dart';
 import '../API/request/simulate/model/simulate_weapon_slot.dart';
 import '../API/request/simulate/simulate_api.dart';
-import '../API/request/update_data/appdata_update_api.dart';
 import '../component/simulate_result_text.dart';
 import '../constant/colors.dart';
-import '../model/entity/armors.dart';
-import '../model/entity/gosekis.dart';
-import '../model/entity/skills.dart';
+import '../constant/strings.dart';
 
-class SimulateResultPage extends StatefulWidget {
+class SimulateResultPage extends ConsumerStatefulWidget {
   final BuildContext context;
   SimulateResultPage({this.context});
 
@@ -32,7 +29,7 @@ class SimulateResultPage extends StatefulWidget {
   _SimulateResultPageState createState() => new _SimulateResultPageState();
 }
 
-class _SimulateResultPageState extends State<SimulateResultPage> {
+class _SimulateResultPageState extends ConsumerState<SimulateResultPage> {
   bool isLoading = false;
   SimulateResponse simulateResponse;
   List<ResAddableSkill> resAddableSkills;
@@ -44,17 +41,34 @@ class _SimulateResultPageState extends State<SimulateResultPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<SimulateSkill> simulateSkills = context.read(skillSelectProvider).getSimulateSkill();
-    List<SimulateGoseki> simulateGoseki = context.read(gosekiProvider).getSimulateGoseki();
-    SimulateWeaponSlot simulateWeaponSlot = context.read(weaponSlotProvider).getSimulateWeaponSlot();
+    final beforeSimulateRequest = ref.read(simulateResultProvider).simulateRequest;
+    List<SimulateSkill> simulateSkills = ref.read(skillSelectProvider).getSimulateSkill();
+    List<SimulateGoseki> simulateGoseki = ref.read(gosekiProvider).getSimulateGoseki();
+    SimulateWeaponSlot simulateWeaponSlot = ref.read(weaponSlotProvider).getSimulateWeaponSlot();
+    SimulateRequest simulateRequest = SimulateRequest(
+      simulateSkills: simulateSkills,
+      simulateGosekis: simulateGoseki,
+      simulateWeaponSlot: simulateWeaponSlot,
+      excludedArmors: [],
+      count: 10,
+      minDefenseNum: 0
+    );
 
     Future simulate() async {
-      simulateResponse = await fetchSimulate(simulateSkills, simulateGoseki, [], simulateWeaponSlot, 0);
+      // if (simulateRequest == beforeSimulateRequest) {
+      //   return ref.read(simulateResultProvider).simulateResponse;
+      // }
+      simulateResponse = await fetchSimulate(simulateRequest);
+      ref.read(simulateResultProvider).setSimulateInfo(simulateRequest, simulateResponse);
       return simulateResponse;
     }
 
     Future addedSkillSimulate() async {
-      resAddableSkills = await addableSkillSimulate(simulateSkills, simulateGoseki, [], simulateWeaponSlot, 0);
+      // if (simulateRequest == beforeSimulateRequest) {
+      //   return ref.read(simulateResultProvider).resAddableSkills;
+      // }
+      resAddableSkills = await addableSkillSimulate(simulateRequest);
+      ref.read(simulateResultProvider).setAddableSimulateInfo(resAddableSkills);
       return resAddableSkills;
     }
 
@@ -91,7 +105,7 @@ class _SimulateResultPageState extends State<SimulateResultPage> {
           title: Text("検索結果"),
           centerTitle: true,
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(60),
+            preferredSize: Size.fromHeight(50),
             child: Column(
               children: [
                 Container(
@@ -329,6 +343,13 @@ class _SimulateResultPageState extends State<SimulateResultPage> {
   }
 
   Widget addedSkillMainView(BuildContext context, List<ResAddableSkill> addableSkills) {
+    List<int> skillLevelList(ResAddableSkill addableSkill) {
+      List<int> rt = [];
+      for (var i = 1; i <= addableSkill.addableMaxSkillLevel; i++) {
+        rt.add(i);
+      }
+      return rt;
+    }
     return Column(
         children: <Widget>[
           addableSkills.length == 0
@@ -353,19 +374,73 @@ class _SimulateResultPageState extends State<SimulateResultPage> {
                   context: context,
                   removeBottom: true,
                   child: Container(
+                      margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
                       color: LISTVIEW_BACKGROUND_COLOR,
                       child: Scrollbar(
                         child: ListView.builder(
                           itemBuilder: (BuildContext context, int index) {
-                            return Column(
-                              children: [
-                                Container(
-                                    child: Text(
-                                        addableSkills[index].addableSkillName + "Lv." +
-                                        addableSkills[index].addableMaxSkillLevel.toString()
-                                    )
-                                ),
-                              ],
+                            return Container(
+                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: Column(
+                                children: [
+                                  if (index == 0) Padding(
+                                    padding: EdgeInsets.only(top: 10),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            child: IconButton(
+                                                onPressed: (){},
+                                                icon: Icon(
+                                                  Icons.add_circle_outline,
+                                                  color: SECOND_THEME_COLOR,
+                                                )
+                                            )
+                                          ),
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          Container(
+                                            child: Text(
+                                                addableSkills[index].addableSkillName
+                                            )
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                          alignment: Alignment.bottomRight,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                  LEVEL
+                                              ),
+                                              DropdownButton<int>(
+                                                value: addableSkills[index].addableMaxSkillLevel,
+                                                onChanged: (newValue) {
+                                                  // setState(() {
+                                                  //   ref.read(skillSelectProvider).setSelectedSkillLevel(ref.read(skillSelectProvider).selectedSkills.elementAt(index), newValue);
+                                                  // });
+                                                },
+                                                items: skillLevelList(addableSkills[index]).map<DropdownMenuItem<int>>((int value) {
+                                                  return DropdownMenuItem<int>(
+                                                    value: value,
+                                                    child: Text(value.toString()),
+                                                  );
+                                                }).toList(),
+                                              )
+                                            ],
+                                          )
+                                      )
+                                    ],
+                                  ),
+                                  if (index == addableSkills.length - 1) Padding(
+                                    padding: EdgeInsets.only(bottom: 10),
+                                  ),
+                                ],
+                              ),
                             );
                           },
                           itemCount: addableSkills.length,
@@ -373,12 +448,16 @@ class _SimulateResultPageState extends State<SimulateResultPage> {
                       )
                   )
               )
-          )
+          ),
+          ElevatedButton(
+              onPressed: (){},
+              child: Text("スキルを確認")
+          ),
+          ElevatedButton(
+              onPressed: (){},
+              child: Text("再検索")
+          ),
         ]
     );
   }
-
-  // Widget addedSkillMainView(BuildContext context, SimulateResponse simulateResponse) {
-  //   return Text("aaa");
-  // }
 }
